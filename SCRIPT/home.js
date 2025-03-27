@@ -121,22 +121,28 @@ function submit() {
   let message = "";
 
   if (percentage === 100) {
-    message = "👑 King! Perfect Score!";
+    emoji = "👑"
+    message = "King! Perfect Score!";
   } else if (percentage >= 70) {
-    message = "🏆 Winner! Great job!";
+    emoji = "🏆"
+    message = " Winner! Great job!";
   } else if (percentage >= 50) {
-    message = "👍 Good! Keep it up!";
+    emoji = "👍";
+    message = "Good! Keep it up!";
   } else if (percentage >= 30) {
-    message = "🙌 Nice try! You can do better!";
+    emoji = "🙌";
+    message = "Nice try! You can do better!";
   } else {
-    message = "😞 Loser! Better luck next time!";
+    emoji = "😞";
+    message = "Loser! Better luck next time!";
   }
 
   // Clear quiz container and display score + message
   quiz_container.innerHTML = `
     <h2>Quiz Completed!</h2>
-    <p>Your Score: <strong>${score} / ${questions.length}</strong></p>
-    <p>${message}</p>
+    <p style="font-size: 2rem; font-weight: bold; text-align: center;">Your Score: <strong>${score} / ${questions.length}</strong></p>
+    <span style = " font-size: 4rem; ">${emoji}</span>
+    <p style="font-size: 1rem; font-weight: bold; text-align: center;">${message}</p>
     <button id="restart-btn">Restart Quiz</button>
   `;
 
