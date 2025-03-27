@@ -30,7 +30,6 @@ document.addEventListener("DOMContentLoaded", function () {
     "Maharashtra has the highest number of UNESCO World Heritage Sites in India, including Ajanta & Ellora Caves, and the Chhatrapati Shivaji Terminus in Mumbai.",
   ];
 
-  
   const factElement = document.getElementById("random-fact");
   function showRandomFact() {
     const randomIndex = Math.floor(Math.random() * facts.length);

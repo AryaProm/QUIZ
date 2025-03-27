@@ -1,155 +1,35 @@
-const questions = [
-  {
-    question: "What is the capital of France?",
-    options: ["Berlin", "Madrid", "Paris", "Rome"],
-    correctAnswer: 2,
-  },
-  {
-    question: "Which planet is known as the Red Planet?",
-    options: ["Earth", "Mars", "Jupiter", "Saturn"],
-    correctAnswer: 1,
-  },
-  {
-    question: "Who wrote 'Romeo and Juliet'?",
-    options: ["Shakespeare", "Dickens", "Hemingway", "Austen"],
-    correctAnswer: 0,
-  },
-];
+import { questions } from "./questions.js";
+import { Render_Function } from "../SCRIPT/functions.js";
 
-const quiz_container = document.getElementById("quiz-container");
-const question_text = document.getElementById("question-text");
-const options_container = document.getElementById("options-container");
+
 const next_Button = document.getElementById("next-btn");
 const prev_Button = document.getElementById("prev-btn");
-const next_Button_Img = document.getElementById("next-btn-img");
-const current_question = document.getElementById("current-question");
 const total_question = document.getElementById("total-questions");
 
-let currentQuestionIndex = 0;
-let userAnswers = new Array(questions.length).fill(null); // Stores user answers
-total_question.innerText = questions.length
-function render_question() {
+total_question.innerText = questions.length;
 
-  current_question.innerText = currentQuestionIndex + 1; // Update current question number
-
-  if (currentQuestionIndex < questions.length && currentQuestionIndex >= 0) {
-    options_container.innerHTML = ""; // Clear previous options
-    let question = questions[currentQuestionIndex]; // Get the current question
-    question_text.innerText = question.question; // Display question text
-
-    // Loop through options and create radio buttons
-    question.options.forEach((option, index) => {
-      let optionWrapper = document.createElement("div");
-      optionWrapper.classList.add("option-container");
-
-      let radio = document.createElement("input");
-      radio.type = "radio";
-      radio.name = "quiz-option";
-      radio.value = index;
-      radio.id = `option${index}`;
-      radio.classList.add("quiz-option");
-
-      let label = document.createElement("label");
-      label.htmlFor = `option${index}`;
-      label.textContent = option;
-
-      if (userAnswers[currentQuestionIndex] === index) {
-        radio.checked = true;
-      }
-
-      radio.addEventListener("change", () => {
-        userAnswers[currentQuestionIndex] = index;
-      });
-
-      optionWrapper.appendChild(radio);
-      optionWrapper.appendChild(label);
-      options_container.appendChild(optionWrapper);
-    });
-
-    // Show/hide "Previous" button
-    prev_Button.style.display =
-      currentQuestionIndex === 0 ? "none" : "inline-block";
-
-    // Change "Next" button to "Finish" on the last question
-    if (currentQuestionIndex === questions.length - 1) {
-      next_Button_Img.src = "../IMAGES/Finish.png"; // Change to finish icon
-      next_Button_Img.alt = "Finish";
-    } else {
-      next_Button_Img.src = "../IMAGES/Arrow_Front.png"; // Default arrow
-      next_Button_Img.alt = "Next";
-    }
-  }
-}
+const RF = new Render_Function(questions);
 
 // Next button logic
 next_Button.addEventListener("click", function () {
-  // Check if the user has selected an answer
-  if (userAnswers[currentQuestionIndex] === null) {
+  if (RF.userAnswers[RF.currentQuestionIndex] === null) {
     alert("Please select an option before proceeding!");
     return;
   }
-
-  if (currentQuestionIndex < questions.length - 1) {
-    currentQuestionIndex++;
-    render_question();
+  if (RF.currentQuestionIndex < questions.length - 1) {
+    RF.currentQuestionIndex++; // Update inside the class
+    RF.render_question();
   } else {
-    submit();
+    RF.submit();
   }
 });
 
 // Previous button logic
 prev_Button.addEventListener("click", function () {
-  if (currentQuestionIndex > 0) {
-    currentQuestionIndex--;
-    render_question();
+  if (RF.currentQuestionIndex > 0) {
+    RF.currentQuestionIndex--; // Update inside the class
+    RF.render_question();
   }
 });
 
-// Function to calculate score and display results
-function submit() {
-  let score = 0;
-
-  // Calculate the score
-  questions.forEach((question, index) => {
-    if (userAnswers[index] === question.correctAnswer) {
-      score++;
-    }
-  });
-
-  // Determine feedback based on score percentage
-  let percentage = (score / questions.length) * 100;
-  let message = "";
-
-  if (percentage === 100) {
-    emoji = "👑"
-    message = "King! Perfect Score!";
-  } else if (percentage >= 70) {
-    emoji = "🏆"
-    message = " Winner! Great job!";
-  } else if (percentage >= 50) {
-    emoji = "👍";
-    message = "Good! Keep it up!";
-  } else if (percentage >= 30) {
-    emoji = "🙌";
-    message = "Nice try! You can do better!";
-  } else {
-    emoji = "😞";
-    message = "Loser! Better luck next time!";
-  }
-
-  // Clear quiz container and display score + message
-  quiz_container.innerHTML = `
-    <h2>Quiz Completed!</h2>
-    <p style="font-size: 2rem; font-weight: bold; text-align: center;">Your Score: <strong>${score} / ${questions.length}</strong></p>
-    <span style = " font-size: 4rem; ">${emoji}</span>
-    <p style="font-size: 1rem; font-weight: bold; text-align: center;">${message}</p>
-    <button id="restart-btn">Restart Quiz</button>
-  `;
-
-  // Restart quiz button functionality
-  document.getElementById("restart-btn").addEventListener("click", function () {
-    window.location.href = "index.html"; // Redirect to index.html
-  });
-}
-
-render_question(); // Initial render
+RF.render_question(); // Initial render
