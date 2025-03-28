@@ -1,6 +1,6 @@
 export class Render_Function {
   constructor(questions) {
-    this.userAnswers = new Array(questions.length).fill(null); // Stores user answers
+    this.userAnswers = new Array(questions.length).fill(null);
     this.quiz_container = document.getElementById("quiz-container");
     this.question_text = document.getElementById("question-text");
     this.options_container = document.getElementById("options-container");
@@ -12,18 +12,24 @@ export class Render_Function {
   }
 
   render_question() {
-    const { currentQuestionIndex, questions, options_container, question_text, prev_Button, next_Button_Img } = this;
-    
-    this.current_question.innerText = currentQuestionIndex + 1; // Update question number
+    const {
+      currentQuestionIndex,
+      questions,
+      options_container,
+      question_text,
+      prev_Button,
+      next_Button_Img,
+    } = this;
+
+    this.current_question.innerText = currentQuestionIndex + 1;
     const question = questions[currentQuestionIndex];
 
     if (!question) return;
 
-    question_text.innerText = question.question; // Display question text
-    options_container.innerHTML = ""; // Clear previous options
+    question_text.innerText = question.question;
+    options_container.innerHTML = "";
 
-    const fragment = document.createDocumentFragment(); // Improves performance
-
+    const fragment = document.createDocumentFragment();
     question.options.forEach((option, index) => {
       const optionWrapper = document.createElement("div");
       optionWrapper.classList.add("option-container");
@@ -48,14 +54,15 @@ export class Render_Function {
       fragment.appendChild(optionWrapper);
     });
 
-    options_container.appendChild(fragment); // Append all at once
+    options_container.appendChild(fragment);
 
-    // Toggle "Previous" button visibility
-    prev_Button.style.display = currentQuestionIndex === 0 ? "none" : "inline-block";
+    prev_Button.style.display =
+      currentQuestionIndex === 0 ? "none" : "inline-block";
 
-    // Change "Next" button to "Finish" on the last question
     const isLastQuestion = currentQuestionIndex === questions.length - 1;
-    next_Button_Img.src = isLastQuestion ? "../IMAGES/Finish.png" : "../IMAGES/Arrow_Front.png";
+    next_Button_Img.src = isLastQuestion
+      ? "../IMAGES/Finish.png"
+      : "../IMAGES/Arrow_Front.png";
     next_Button_Img.alt = isLastQuestion ? "Finish" : "Next";
 
     console.log(this.userAnswers);
@@ -66,19 +73,26 @@ export class Render_Function {
       return total + (answer === this.questions[index].correctAnswer ? 1 : 0);
     }, 0);
 
-    // Determine feedback based on score percentage
     const percentage = (score / this.questions.length) * 100;
-    const feedback = [
-      { threshold: 100, emoji: "👑", message: "King! Perfect Score!" },
-      { threshold: 70, emoji: "🏆", message: "Winner! Great job!" },
-      { threshold: 50, emoji: "👍", message: "Good! Keep it up!" },
-      { threshold: 30, emoji: "🙌", message: "Nice try! You can do better!" },
-      { threshold: 0, emoji: "😞", message: "Loser! Better luck next time!" },
-    ];
+    let emoji, message;
 
-    const { emoji, message } = feedback.find(({ threshold }) => percentage >= threshold);
+    if (percentage === 100) {
+      emoji = "👑";
+      message = "King! Perfect Score!";
+    } else if (percentage >= 70) {
+      emoji = "🏆";
+      message = "Winner! Great job!";
+    } else if (percentage >= 50) {
+      emoji = "👍";
+      message = "Good! Keep it up!";
+    } else if (percentage >= 30) {
+      emoji = "🙌";
+      message = "Nice try! You can do better!";
+    } else {
+      emoji = "😞";
+      message = "Loser! Better luck next time!";
+    }
 
-    // Display results
     this.quiz_container.innerHTML = `
       <h2>Quiz Completed!</h2>
       <p style="font-size: 2rem; font-weight: bold; text-align: center;">
@@ -90,7 +104,7 @@ export class Render_Function {
     `;
 
     document.getElementById("restart-btn").addEventListener("click", () => {
-      window.location.href = "index.html"; // Restart quiz
+      window.location.href = "index.html";
     });
   }
 }
