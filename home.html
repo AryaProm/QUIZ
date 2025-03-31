@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz App</title>
+    <link rel="stylesheet" href="./CSS/home.css" />
+    <link rel="icon" href="./IMAGES/Finish.png">
+  </head>
+  <body>
+    <div id="quiz-container">
+      <h1>Ultimate Quiz</h1>
+        <hr>
+      <div id="question-container">
+        <p id="question-text">Question goes here</p>
+        <hr><br>
+        <div id="options-container">
+          
+        </div>
+      </div>
+
+      <div id="progress-container">
+        <p>
+          QUESTION <span id="current-question"></span> OF
+          <span id="total-questions"></span>
+        </p>
+      </div>
+
+      <div id="score-container">
+      </div>
+      <div class="buttons">
+        <button id="prev-btn">
+          <img src="../IMAGES/Arrow_Back.png" alt="" />
+        </button>
+        <button id="next-btn">
+          <img src="../IMAGES/Arrow_Front.png" alt="" id = "next-btn-img"/>
+        </button>
+      </div>
+    </div>
+
+    <script src="../SCRIPT/home.js" type="module"></script>
+    <script src = "../SCRIPT/questions.js" type="module"></script>
+    <script src="../SCRIPT/functions.js" type="module"></script>
+  </body>
+</html>
